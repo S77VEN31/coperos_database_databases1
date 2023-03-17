@@ -1,4 +1,13 @@
-Orden por Prioridad:
+Orden de inserts que no necesitan de lógica SQL:
+
+1.client, employees, carts
+
+2.items, products, items_x_products
+
+3.locations, file_types, files, files_x_locations
+
+
+Orden por Prioridad de inserts que si necesitan de lógica SQL y su debido STORED PROCEDURE:
 
 1.products_prices_logs, comissions_logs
 

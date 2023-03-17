@@ -1,6 +1,6 @@
 --Para los archivos de cada playa:
 
-INSERT INTO files_x_locations (playa_id, file_id) VALUES
+INSERT INTO files_x_locations (location_id, file_id) VALUES
 (1, 1),
 (1, 2),
 (1, 3),

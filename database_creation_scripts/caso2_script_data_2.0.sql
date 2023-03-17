@@ -252,7 +252,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `caso2`.`purchase_orders` (
   `order_id` INT NOT NULL,
   `deleted` BIT NOT NULL DEFAULT 0,
-  `state` INT NOT NULL DEFAULT 0 COMMENT '0 = in site purchase\n1 = in progress\n2 = ready to take\n3 = completed',
+  `state` INT NOT NULL DEFAULT 0 COMMENT '0 = in site purchase\n1 = in progress\n2 = ready to take\n3 = completed\n4= canceled by employee\n5= canceled by client',
   `order_creation_date` DATETIME NOT NULL,
   `sale_id` INT NOT NULL,
   `employee_id` INT NOT NULL,
@@ -283,8 +283,8 @@ ENGINE = InnoDB;
 -- Table `caso2`.`products_x_sales`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `caso2`.`products_x_sales` (
-  `deleted` BIT NOT NULL DEFAULT 0,
   `amount` INT NOT NULL,
+  `deleted` BIT NOT NULL DEFAULT 0,
   `sale_id` INT NOT NULL,
   `product_id` INT NOT NULL,
   INDEX `fk_products_x_sales_products1_idx` (`product_id` ASC) VISIBLE,
@@ -325,7 +325,7 @@ ENGINE = InnoDB;
 -- Table `caso2`.`product_prices_logs`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `caso2`.`product_prices_logs` (
-  `product_price_log_id` INT NOT NULL,
+  `product_price_log_id` INT NOT NULL AUTO_INCREMENT,
   `price_change_log_date` DATE NOT NULL,
   `prev_price` DECIMAL(12,2) NOT NULL,
   `current_price` DECIMAL(12,2) NOT NULL,

@@ -42,7 +42,7 @@ BEGIN
         SET prev_price = price; -- asignar el valor de "current_price" al valor de "prev_price" para el próximo registro
       END IF;
 
-      SET price = price + ROUND(RAND() * 100 - 50) * 100;
+      SET price = price + ROUND(RAND() * 100 - 50);
       SET start_date = DATE_ADD(start_date, INTERVAL 1 DAY);
     END WHILE;
 

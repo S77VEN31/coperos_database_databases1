@@ -251,9 +251,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `caso2`.`purchase_orders` (
   `order_id` INT NOT NULL,
-  `deleted` BIT NOT NULL DEFAULT 0,
   `state` INT NOT NULL DEFAULT 0 COMMENT '0 = in site purchase\n1 = in progress\n2 = ready to take\n3 = completed\n4= canceled by employee\n5= canceled by client',
-  `order_creation_date` DATETIME NOT NULL,
+  `order_creation_date` DATE NOT NULL,
   `employee_id` INT NOT NULL,
   `client_id` INT NOT NULL,
   PRIMARY KEY (`order_id`),
@@ -290,25 +289,6 @@ CREATE TABLE IF NOT EXISTS `caso2`.`products_x_sales` (
   CONSTRAINT `fk_products_x_sales_sales1`
     FOREIGN KEY (`sale_id`)
     REFERENCES `caso2`.`sales` (`sale_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `caso2`.`order_logs`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `caso2`.`order_logs` (
-  `log_id` INT NOT NULL AUTO_INCREMENT,
-  `order_current_state` INT NOT NULL,
-  `order_prev_state` INT NOT NULL,
-  `state_change_time` DATETIME NOT NULL,
-  `order_id` INT NOT NULL,
-  INDEX `fk_order_logs_purchase_order1_idx` (`order_id` ASC) VISIBLE,
-  PRIMARY KEY (`log_id`),
-  CONSTRAINT `fk_order_logs_purchase_order1`
-    FOREIGN KEY (`order_id`)
-    REFERENCES `caso2`.`purchase_orders` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

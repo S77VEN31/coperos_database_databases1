@@ -5,6 +5,7 @@ BEGIN
     DECLARE end_date DATE DEFAULT DATE_ADD(start_date, INTERVAL 6 MONTH);
     DECLARE num_inserts INT;
     DECLARE max_order_id INT;
+    
     SELECT COALESCE(MAX(order_id), 0) INTO max_order_id FROM purchase_orders;
     WHILE start_date <= end_date DO
         SET num_inserts = FLOOR(1 + RAND() * (20-1+1));
@@ -19,8 +20,6 @@ BEGIN
         END WHILE;
         SET start_date = DATE_ADD(start_date, INTERVAL 1 DAY);
     END WHILE;
-END;
- $$
-DELIMITER ;
+END $$ DELIMITER;
 
 CALL insert_purchase_orders();

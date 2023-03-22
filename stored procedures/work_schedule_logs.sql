@@ -1,5 +1,5 @@
 DELIMITER $$
-CREATE PROCEDURE insert_work_schedule_logs()
+CREATE PROCEDURE insert_work_schedule_logs(IN employee_range INT,IN location_range INT, IN cart_range INT)
 BEGIN
     DECLARE start_date DATE;
     DECLARE end_date DATE;
@@ -18,9 +18,9 @@ BEGIN
         SET start_time = TIME('08:00:00');
         SET end_time = TIME('16:00:00');
         WHILE start_time <= end_time DO
-            SET employee_id = FLOOR(RAND() * 15) + 1;
-            SET cart_id = FLOOR(RAND() * 30) + 1;
-            SET location_id = FLOOR(RAND() * 9) + 1;
+            SET employee_id = FLOOR(RAND() * 5) + employee_range;
+            SET cart_id = FLOOR(RAND() * 10) + cart_range;
+            SET location_id = FLOOR(RAND() * 3) + location_range;
             INSERT INTO work_schedule_logs (start_time, end_time, log_date, cart_id, employee_id, location_id)
             SELECT start_time, ADDTIME(start_time, '08:00:00'), cur_date, cart_id, employee_id, location_id
             FROM DUAL
@@ -48,4 +48,8 @@ BEGIN
 END $$
 DELIMITER ;
 
-CALL insert_work_schedule_logs();
+CALL insert_work_schedule_logs(1,1,1);
+CALL insert_work_schedule_logs(6,4,11);
+CALL insert_work_schedule_logs(11,7,21);
+
+

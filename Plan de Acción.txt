@@ -21,3 +21,6 @@ Orden por Prioridad de inserts que si necesitan de lógica SQL y su debido STORE
 
 7.employee_salary_logs
 
+TO DO:
+
+Purchase order no debe tener un sale ID

@@ -470,7 +470,7 @@ BEGIN
             SET period_end_date = DATE_ADD(period_start_date, INTERVAL 1 DAY);
         END IF;
         -- insert commission log
-        INSERT INTO commisions_logs (commision_id, commision_log_start_date, commision_log_end_date, commision_percentaje)
+        INSERT INTO commission_logs (commission_id, commission_log_start_date, commission_log_end_date, commission_percentaje)
         VALUES (commission_id, period_start_date, period_end_date, commission_percentage);
         -- update variables for next iteration
         SET start_date = DATE_ADD(period_end_date, INTERVAL 1 DAY);

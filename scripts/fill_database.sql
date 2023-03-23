@@ -562,17 +562,18 @@ BEGIN
         SET num_inserts = FLOOR(1 + RAND() * (20-1+1));
         WHILE num_inserts > 0 DO
             SET max_order_id = max_order_id + 1;
-            INSERT INTO purchase_orders (order_id, state, order_creation_date, employee_id, client_id)
+            INSERT INTO purchase_orders (order_id, state, order_creation_date, work_schedule_log_id, client_id)
             VALUES (max_order_id,
                     IF(RAND() < .9, 1,
-                       IF(RAND() < .5,2 ,3)), start_date,
-                    FLOOR(1 + RAND() * (15-1+1)), FLOOR(1 + RAND() * (7000-1+1)));
+                    IF(RAND() < .5,2 ,3)),
+                    start_date,
+                    (SELECT work_schedule_log_id FROM work_schedule_logs WHERE log_date =  start_date ORDER BY RAND() LIMIT 1), 
+                    FLOOR(1 + RAND() * (7000-1+1)));
             SET num_inserts = num_inserts - 1;
         END WHILE;
         SET start_date = DATE_ADD(start_date, INTERVAL 1 DAY);
     END WHILE;
-END $$ 
-DELIMITER;
+END $$ DELIMITER;
 
 
 
@@ -631,6 +632,7 @@ DELIMITER ;
 
 
 -- LLAMAR AL STORED PROCEDURE QUE GENERA PRODUCTOS POR ORDENES
+DELIMITER $$
 CREATE PROCEDURE insert_products_x_purchase_order()
 BEGIN
     DECLARE i INT DEFAULT 0;

@@ -23,6 +23,6 @@ Orden por Prioridad de inserts que si necesitan de lógica SQL y su debido STORE
 
 TO DO:
 
-Arregla el insert_inventory_logs
-Implementar el insert_inventory_logs_all_items con la funcion que se desea (con o sin fecha)
-Implementar ventas
+employee_salary_logs
+
+cash_drawer_logs

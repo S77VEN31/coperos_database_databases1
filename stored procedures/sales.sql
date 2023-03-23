@@ -5,6 +5,7 @@ BEGIN
     DECLARE num_sales INT;
     DECLARE i INT DEFAULT 0;
     DECLARE z DATETIME;
+    DECLARE x INT DEFAULT 0;
 
     DROP TEMPORARY TABLE IF EXISTS temp_work_schedule_logs;
     CREATE TEMPORARY TABLE temp_work_schedule_logs AS SELECT log_date, start_time, end_time, work_schedule_log_id FROM work_schedule_logs;
@@ -24,7 +25,9 @@ BEGIN
                               total_price,
                               deleted,
                               client_id,
-                              work_schedule_log_id)
+                              work_schedule_log_id,
+                              commission_id
+                              )
             VALUES(
 				z,
                 (SELECT ADDTIME(z, CONCAT('00:00:', FLOOR(RAND() * 31) + 10))),
@@ -39,7 +42,9 @@ BEGIN
                     ELSE 0 
                 END ,
                 FLOOR(1 + RAND()*7000),
-                @work_schedule_log_id);
+                @work_schedule_log_id,
+                (IFNULL((SELECT commission_id FROM commission_logs WHERE z BETWEEN commission_log_start_date AND commission_log_end_date ORDER BY commission_id DESC LIMIT 1),(SELECT commission_id FROM caso2.commission_logs WHERE commission_id ORDER BY commission_id DESC LIMIT 1)))
+                );
             SET i = i +1 ;
         END WHILE;
     END WHILE;

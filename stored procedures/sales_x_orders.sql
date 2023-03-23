@@ -1,4 +1,6 @@
-DELIMITER //
+DROP PROCEDURE IF EXISTS insert_sale_from_order;
+
+DELIMITER $$
 CREATE PROCEDURE insert_sale_from_order()
 BEGIN
     DECLARE done INT DEFAULT FALSE;
@@ -23,16 +25,18 @@ BEGIN
                                  client_id,
                                  work_schedule_log_id,
                                  commission_id)
-        VALUES (o_creation_date,
-                o_creation_date,
-                1,
-                0,
-                0,
-                o_client_id,
-                o_work_schedule_log_id,
-                1);
+        SELECT o_creation_date,
+               o_creation_date,
+               1,
+               0,
+               0,
+               o_client_id,
+               o_work_schedule_log_id,
+               commission_logs.commission_id
+          FROM caso2.commission_logs
+         WHERE commission_logs.commission_log_start_date < o_creation_date AND commission_logs.commission_log_end_date >= o_creation_date;
     END LOOP;
 
     CLOSE cur;
-END//
+END$$
 DELIMITER ;

@@ -7,7 +7,7 @@ DECLARE sale_count INT;
 DECLARE product_count INT;
 DECLARE p_product_id INT;
 DECLARE amount INT;
-SET sale_count = (SELECT COUNT(*) FROM purchase_orders);
+SET sale_count = (SELECT COUNT(*) FROM sales);
 WHILE i < sale_count DO
     SET product_count = FLOOR(RAND()*(5-1+1))+1; -- generate a random number between 1 and 5
     SET p_product_id = (SELECT product_id FROM products ORDER BY RAND() LIMIT 1); -- get a random product_id

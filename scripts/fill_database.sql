@@ -438,9 +438,10 @@ BEGIN
     SET end_date = DATE_ADD(NOW(), INTERVAL 6 MONTH);
     SET product_ids = product_ids + 1;
   END WHILE;
-END $$ DELIMITER;
+END $$
+DELIMITER;
 
-CALL generate_price_logs();
+
 
 -- LLAMAR AL STORED PROCEDURE QUE GENERA EL HISTORIAL DE PRECIOS
 DELIMITER $$
@@ -477,9 +478,10 @@ BEGIN
         SET commission_id = commission_id + 1;
         SET prev_end_date = period_end_date;
     END WHILE;
-END $$ DELIMITER;
+END $$
+DELIMITER;
 
-CALL generate_commission_logs();
+
 
 -- LLAMAR AL STORED PROCEDURE QUE GENERA EL HISTORIAL DE HORARIOS
 DELIMITER $$
@@ -528,11 +530,10 @@ BEGIN
         END WHILE;
         SET cur_date = ADDDATE(cur_date, 1);
     END WHILE;
-END $$ DELIMITER;
+END $$
+DELIMITER;
 
-CALL insert_work_schedule_logs(1,1,1);
-CALL insert_work_schedule_logs(6,4,11);
-CALL insert_work_schedule_logs(11,7,21);
+
 
 -- LLAMAR AL STORED PROCEDURE QUE GENERA EL HISTORIAL DE HORARIOS
 DELIMITER $$
@@ -557,6 +558,17 @@ BEGIN
         END WHILE;
         SET start_date = DATE_ADD(start_date, INTERVAL 1 DAY);
     END WHILE;
-END $$ DELIMITER;
+END $$ 
+DELIMITER;
+
+-- CALL FOR PROCEDURES
+
+CALL generate_price_logs();
+
+CALL generate_commission_logs();
+
+CALL insert_work_schedule_logs(1,1,1);
+CALL insert_work_schedule_logs(6,4,11);
+CALL insert_work_schedule_logs(11,7,21);
 
 CALL insert_purchase_orders();

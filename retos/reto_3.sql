@@ -4,7 +4,9 @@
 -- además de saber cuánto se le debe pagar a cada copero.
 
 -- los gastos de items se pueden filtar en la tabla inventory_logs
-
+SELECT item_id, movement_type, WEEK(log_time), MIN(log_time), MAX(log_time), SUM(movement_amount)
+FROM inventory_logs
+GROUP BY item_id, movement_type, WEEK(log_time);
 -- Ventas por semana
 SELECT YEARWEEK(transaction_date) AS week,
        MIN(transaction_date) AS week_start,

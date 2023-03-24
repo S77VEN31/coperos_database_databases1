@@ -29,6 +29,8 @@ BEGIN
 		LIMIT 1
 	) AS ws;
 
+    SET v_work_schedule_id = COALESCE(v_work_schedule_id, CURDATE());  -- Manejar el caso en que v_work_schedule_id es NULL
+
     SELECT product_amount		    -- Obtener la cantidad actual de producto
     INTO v_product_amount
     FROM inventory_logs

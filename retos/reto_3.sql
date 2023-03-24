@@ -18,3 +18,5 @@ SELECT YEARWEEK(transaction_date) AS week,
  ORDER BY YEARWEEK(transaction_date);
 
  -- cuánto se le debe pagar a cada copero se consulta en employee_salary_logs
+
+ -- esto se obtiene de la tabla employee salary logs

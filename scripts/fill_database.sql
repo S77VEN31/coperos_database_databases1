@@ -811,6 +811,48 @@ BEGIN
 END$$
 DELIMITER ;
 
+
+
+-- Procedure para generar sales en base a ordenes
+DELIMITER $$
+CREATE PROCEDURE insert_sale_from_order()
+BEGIN
+    INSERT INTO caso2.sales (transaction_date,
+                             invoice_creation_date,
+                             pay_type,
+                             `change`,
+                             total_price,
+                             client_id,
+                             work_schedule_log_id,
+                             commission_id)
+    SELECT transaction_date_value,
+           TIMESTAMPADD(SECOND, FLOOR(RAND() * (20 - 10 + 1) + 10), transaction_date_value),
+           1,
+           0,
+           total_price,
+           client_id,
+           work_schedule_log_id,
+           commission_id
+      FROM (SELECT DATE_FORMAT(TIMESTAMPADD(SECOND, -FLOOR(RAND() * TIMESTAMPDIFF(SECOND, work_schedule_logs.start_time, work_schedule_logs.end_time)), purchase_orders.order_creation_date), '%Y-%m-%d %H:%i:00') AS transaction_date_value,
+                   SUM(products.price * products_x_purchase_order.product_amount) AS total_price,
+                   purchase_orders.client_id AS client_id,
+                   purchase_orders.work_schedule_log_id AS work_schedule_log_id,
+                   commission_logs.commission_id AS commission_id
+              FROM caso2.purchase_orders
+              JOIN caso2.commission_logs
+                ON commission_logs.commission_log_start_date < purchase_orders.order_creation_date AND commission_logs.commission_log_end_date >= purchase_orders.order_creation_date
+              JOIN caso2.work_schedule_logs
+                ON work_schedule_logs.work_schedule_log_id = purchase_orders.work_schedule_log_id
+              JOIN caso2.products_x_purchase_order
+                ON products_x_purchase_order.order_id = purchase_orders.order_id
+              JOIN caso2.products
+                ON products.product_id = products_x_purchase_order.product_id
+             WHERE purchase_orders.state = 1 
+             GROUP BY purchase_orders.order_creation_date) AS subq;
+END$$
+
+DELIMITER ;
+
 -- CALL FOR PROCEDURES
 CALL generate_price_logs();
 
@@ -825,7 +867,11 @@ SET SQL_SAFE_UPDATES=0;
 CALL generate_sales();
 
 CALL insert_products_x_purchase_order();
+CALL insert_products_x_purchase_order();
+CALL insert_products_x_purchase_order();
 
 CALL insert_products_x_sales();
+
+CALL insert_sale_from_order();
 
 CALL sales_money_movements();
